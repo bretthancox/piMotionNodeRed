@@ -1,0 +1,484 @@
+[
+    {
+        "id": "23e5c447.c08e3c",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
+        "id": "a56fa04b.752e4",
+        "type": "twitter out",
+        "z": "23e5c447.c08e3c",
+        "twitter": "",
+        "name": "Tweet",
+        "x": 1424,
+        "y": 646,
+        "wires": []
+    },
+    {
+        "id": "4260b990.da0b58",
+        "type": "exec",
+        "z": "23e5c447.c08e3c",
+        "command": "python3 /home/pi/Documents/Python_files/gpioMotion_hardcoded.py",
+        "addpay": true,
+        "append": "",
+        "useSpawn": "",
+        "timer": "",
+        "name": "motionDetector",
+        "x": 576,
+        "y": 663.5,
+        "wires": [
+            [
+                "e0cf1a38.da34e8",
+                "c973d129.01dd3"
+            ],
+            [],
+            []
+        ]
+    },
+    {
+        "id": "9de609be.534408",
+        "type": "debug",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 1358,
+        "y": 315,
+        "wires": []
+    },
+    {
+        "id": "a3c90371.fc1b4",
+        "type": "inject",
+        "z": "23e5c447.c08e3c",
+        "name": "injectForMotion",
+        "topic": "",
+        "payload": " ",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 261,
+        "y": 228,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cba36468.5be1c8",
+        "type": "twitter in",
+        "z": "23e5c447.c08e3c",
+        "twitter": "",
+        "tags": "@twitterName",
+        "user": "user",
+        "name": "searchOwnTweets",
+        "topic": "tweets",
+        "inputs": 0,
+        "x": 120,
+        "y": 503,
+        "wires": [
+            [
+                "992404de.0c00f8"
+            ]
+        ]
+    },
+    {
+        "id": "992404de.0c00f8",
+        "type": "switch",
+        "z": "23e5c447.c08e3c",
+        "name": "hasTagCheck",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "cont",
+                "v": "#securityOn",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 119,
+        "y": 585,
+        "wires": [
+            [
+                "b434fba6.b76d68"
+            ]
+        ]
+    },
+    {
+        "id": "b434fba6.b76d68",
+        "type": "change",
+        "z": "23e5c447.c08e3c",
+        "name": "setPayloadToWhitespace",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": " ",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 152,
+        "y": 667,
+        "wires": [
+            [
+                "4260b990.da0b58",
+                "63a21d7c.14ff74",
+                "e9a540ad.1a"
+            ]
+        ]
+    },
+    {
+        "id": "e4bf4d9f.74837",
+        "type": "watch",
+        "z": "23e5c447.c08e3c",
+        "name": "motionImageCheck",
+        "files": "/home/pi/Pictures/motionshots",
+        "x": 592,
+        "y": 885,
+        "wires": [
+            [
+                "4bbae3d7.71307c",
+                "189c080b.0fe968",
+                "909d21cb.83c51"
+            ]
+        ]
+    },
+    {
+        "id": "e0cf1a38.da34e8",
+        "type": "change",
+        "z": "23e5c447.c08e3c",
+        "name": "motionDetectorFinished",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Motion detection complete at ",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 882,
+        "y": 650,
+        "wires": [
+            [
+                "52c875aa.607dbc"
+            ]
+        ]
+    },
+    {
+        "id": "4bbae3d7.71307c",
+        "type": "change",
+        "z": "23e5c447.c08e3c",
+        "name": "motionDetectedText",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Motion detected at ",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 868,
+        "y": 853,
+        "wires": [
+            [
+                "7ed92257.2fb0ac"
+            ]
+        ]
+    },
+    {
+        "id": "ed5781d4.2c4d5",
+        "type": "join",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "mode": "custom",
+        "build": "string",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "timeout": "",
+        "count": "3",
+        "x": 1215,
+        "y": 864,
+        "wires": [
+            [
+                "a56fa04b.752e4"
+            ]
+        ]
+    },
+    {
+        "id": "f37acc58.69ddb",
+        "type": "join",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "mode": "custom",
+        "build": "string",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "timeout": "",
+        "count": "2",
+        "x": 1210,
+        "y": 708,
+        "wires": [
+            [
+                "a56fa04b.752e4"
+            ]
+        ]
+    },
+    {
+        "id": "1074bde3.7adc72",
+        "type": "join",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "mode": "custom",
+        "build": "string",
+        "property": "payload",
+        "propertyType": "msg",
+        "key": "topic",
+        "joiner": "\\n",
+        "timeout": "",
+        "count": "2",
+        "x": 862,
+        "y": 532,
+        "wires": [
+            [
+                "a56fa04b.752e4"
+            ]
+        ]
+    },
+    {
+        "id": "63a21d7c.14ff74",
+        "type": "change",
+        "z": "23e5c447.c08e3c",
+        "name": "motionDetectorStarted",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "Motion detection started at ",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 506,
+        "y": 539,
+        "wires": [
+            [
+                "1074bde3.7adc72"
+            ]
+        ]
+    },
+    {
+        "id": "f0a24a44.f364e8",
+        "type": "function",
+        "z": "23e5c447.c08e3c",
+        "name": "date",
+        "func": "msg.payload = new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1069,
+        "y": 953,
+        "wires": [
+            [
+                "ed5781d4.2c4d5"
+            ]
+        ]
+    },
+    {
+        "id": "189c080b.0fe968",
+        "type": "delay",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "500",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 870,
+        "y": 951,
+        "wires": [
+            [
+                "f0a24a44.f364e8"
+            ]
+        ]
+    },
+    {
+        "id": "909d21cb.83c51",
+        "type": "delay",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "800",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 894,
+        "y": 902,
+        "wires": [
+            [
+                "ed5781d4.2c4d5"
+            ]
+        ]
+    },
+    {
+        "id": "c973d129.01dd3",
+        "type": "delay",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "500",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 923,
+        "y": 763,
+        "wires": [
+            [
+                "dd429c24.59074"
+            ]
+        ]
+    },
+    {
+        "id": "dd429c24.59074",
+        "type": "function",
+        "z": "23e5c447.c08e3c",
+        "name": "date",
+        "func": "msg.payload = new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 1110,
+        "y": 763,
+        "wires": [
+            [
+                "f37acc58.69ddb"
+            ]
+        ]
+    },
+    {
+        "id": "e9a540ad.1a",
+        "type": "delay",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "500",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 474,
+        "y": 582,
+        "wires": [
+            [
+                "a8cbe07a.7cb95"
+            ]
+        ]
+    },
+    {
+        "id": "a8cbe07a.7cb95",
+        "type": "function",
+        "z": "23e5c447.c08e3c",
+        "name": "date",
+        "func": "msg.payload = new Date();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 696,
+        "y": 581,
+        "wires": [
+            [
+                "1074bde3.7adc72"
+            ]
+        ]
+    },
+    {
+        "id": "52c875aa.607dbc",
+        "type": "delay",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "300",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1105,
+        "y": 654,
+        "wires": [
+            [
+                "f37acc58.69ddb"
+            ]
+        ]
+    },
+    {
+        "id": "7ed92257.2fb0ac",
+        "type": "delay",
+        "z": "23e5c447.c08e3c",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "450",
+        "timeoutUnits": "milliseconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "x": 1072,
+        "y": 828,
+        "wires": [
+            [
+                "ed5781d4.2c4d5"
+            ]
+        ]
+    }
+]
